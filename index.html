@@ -3,13 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#09070b" />
+  <meta name="theme-color" content="#10080e" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <title>Private Archive</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
+  <div class="premium-ambient" aria-hidden="true">
+    <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+  <div id="experience-progress" class="experience-progress" aria-hidden="true">
+    <span class="experience-progress__bar"></span>
+    <span class="experience-progress__label">PRIVATE ARCHIVE</span>
+  </div>
+  <button id="sound-toggle" class="sound-toggle" type="button" aria-label="Toggle interface sound" aria-pressed="false">
+    <span class="sound-toggle__icon">♪</span>
+  </button>
+  <div id="photo-lightbox" class="photo-lightbox" aria-hidden="true" role="dialog" aria-label="Photo viewer">
+    <button class="photo-lightbox__close" type="button" aria-label="Close photo">×</button>
+    <img class="photo-lightbox__img" alt="" />
+    <div class="photo-lightbox__caption"></div>
+  </div>
   <main id="app" class="app-shell">
 
     <section class="scene active" id="scene-lock" data-scene="lock" aria-labelledby="lock-title">
@@ -246,5 +264,6 @@
 
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="premium.js"></script>
 </body>
 </html>
