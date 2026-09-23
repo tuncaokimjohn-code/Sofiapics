@@ -40,6 +40,9 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
       assert.equal(await page.locator("#palagi-player").getAttribute("src"),palagiBefore,"hiding preserves player");
       await page.locator('[data-next="story"]').click();
       await page.locator("#scene-story.active").waitFor();
+      // The page intentionally fades/slides each full-screen scene into view.
+      // Measure final layout only after the current scene has finished moving.
+      await page.locator("#scene-story").evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished.catch(()=>{}))));
       assert.equal(await page.locator("#palagi-player").getAttribute("src"),palagiBefore,
         "Palagi survives scene transition");
       const n = await page.locator(".story-card").count();
