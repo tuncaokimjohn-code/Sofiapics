@@ -48,10 +48,11 @@
 
   passcodeForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const value = passcodeInput.value.trim();
+    const value = String(passcodeInput.value || "").replace(/[^0-9]/g, "").slice(0, 4);
+    passcodeInput.value = value;
     if (value === String(cfg.passcode || "0610")) {
       passcodeError.textContent = "Access granted. Birthday girl detected. ♡";
-      setTimeout(() => showScene("boot"), 500);
+      showScene("boot");
     } else {
       const errors = [
         "Nope. Suspicious visitor detected. 😂",
@@ -60,6 +61,15 @@
       ];
       passcodeError.textContent = errors[Math.floor(Math.random() * errors.length)];
       passcodeInput.select();
+    }
+  });
+
+  passcodeInput.addEventListener("input", () => {
+    const value = String(passcodeInput.value || "").replace(/[^0-9]/g, "").slice(0, 4);
+    if (passcodeInput.value !== value) passcodeInput.value = value;
+    passcodeError.textContent = "";
+    if (value === String(cfg.passcode || "0610")) {
+      showScene("boot");
     }
   });
 
