@@ -974,3 +974,131 @@ img.premium-ready.premium-loaded{opacity:1;filter:none;transform:none;}
   .game-result-sub{font-size:1.14rem;}
   .game-result-unlocked{font-size:2.7rem;}
 }
+
+
+/* =========================================================
+   V2.3 PALAGI FAVORITE SONG
+   Uses the artist's official YouTube player instead of hosting audio.
+   ========================================================= */
+.sound-toggle{
+  overflow:visible;
+}
+.sound-toggle::before{
+  content:"PALAGI";
+  position:absolute;
+  right:48px;
+  padding:7px 10px;
+  border:1px solid rgba(245,220,169,.16);
+  border-radius:999px;
+  background:rgba(13,8,12,.74);
+  backdrop-filter:blur(14px);
+  color:rgba(255,247,240,.76);
+  font:800 .56rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.16em;
+  opacity:0;
+  transform:translateX(7px);
+  transition:.28s ease;
+  pointer-events:none;
+  white-space:nowrap;
+}
+body[data-scene="hero"] .sound-toggle::before,
+body[data-scene="finale"] .sound-toggle::before{
+  opacity:1;
+  transform:none;
+}
+.sound-toggle[aria-pressed="true"]{
+  color:var(--premium-champagne,#f5dca9);
+  border-color:rgba(245,220,169,.48);
+  box-shadow:0 0 0 4px rgba(245,220,169,.07),0 12px 32px rgba(0,0,0,.42);
+}
+.song-sheet{
+  position:fixed;
+  z-index:420;
+  right:max(14px,env(safe-area-inset-right));
+  bottom:max(70px,calc(env(safe-area-inset-bottom) + 66px));
+  width:min(390px,calc(100vw - 28px));
+  padding:22px;
+  border:1px solid rgba(245,220,169,.18);
+  border-radius:28px;
+  background:
+    linear-gradient(145deg,rgba(28,15,24,.96),rgba(8,6,10,.96)),
+    radial-gradient(circle at 15% 0%,rgba(243,182,199,.12),transparent 40%);
+  box-shadow:0 34px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.07);
+  backdrop-filter:blur(26px) saturate(140%);
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(18px) scale(.965);
+  transition:opacity .3s ease,transform .38s cubic-bezier(.2,.8,.2,1),visibility .3s;
+}
+.song-sheet.open{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+}
+.song-sheet__close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  padding:0;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-size:1.45rem;
+  line-height:1;
+}
+.song-sheet__kicker{
+  color:var(--premium-champagne,#f5dca9);
+  font:800 .62rem/1.2 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.21em;
+}
+.song-sheet h3{
+  margin:8px 0 2px;
+  font-size:2.25rem;
+  color:#fff9f6;
+}
+.song-sheet__artist{
+  margin:0 0 16px;
+  color:rgba(255,255,255,.62);
+  font-size:.92rem;
+}
+.song-sheet__frame{
+  overflow:hidden;
+  border-radius:18px;
+  background:#000;
+  aspect-ratio:16/9;
+  box-shadow:0 18px 50px rgba(0,0,0,.42);
+}
+.song-sheet__frame iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+.song-sheet__note{
+  margin:14px 0 8px;
+  color:rgba(255,255,255,.72);
+  font-size:.82rem;
+  line-height:1.5;
+}
+.song-sheet__link{
+  display:inline-block;
+  color:#f3bfd0;
+  font-weight:800;
+  font-size:.78rem;
+  text-decoration:none;
+}
+@media(max-width:430px){
+  .song-sheet{
+    left:12px;
+    right:12px;
+    bottom:max(68px,calc(env(safe-area-inset-bottom) + 62px));
+    width:auto;
+    padding:20px 18px;
+    border-radius:24px;
+  }
+  .song-sheet h3{font-size:2rem;}
+  .sound-toggle::before{display:none;}
+}
