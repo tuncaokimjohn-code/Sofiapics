@@ -66,14 +66,42 @@
     }
   }
 
+  const songSheet = document.getElementById("song-sheet");
+  const songClose = document.getElementById("song-close");
+  const palagiPlayer = document.getElementById("palagi-player");
+  const palagiEmbed = "https://www.youtube-nocookie.com/embed/v82VtUUGFqk?autoplay=1&playsinline=1&rel=0";
+
+  function openSongSheet() {
+    if (!songSheet || !soundToggle) return;
+    songSheet.classList.add("open");
+    songSheet.setAttribute("aria-hidden", "false");
+    soundToggle.setAttribute("aria-pressed", "true");
+    soundToggle.querySelector(".sound-toggle__icon").textContent = "♫";
+    if (palagiPlayer && !palagiPlayer.src) palagiPlayer.src = palagiEmbed;
+    vibrate(12);
+  }
+
+  function closeSongSheet() {
+    if (!songSheet || !soundToggle) return;
+    songSheet.classList.remove("open");
+    songSheet.setAttribute("aria-hidden", "true");
+    soundToggle.setAttribute("aria-pressed", "false");
+    soundToggle.querySelector(".sound-toggle__icon").textContent = "♪";
+    if (palagiPlayer) palagiPlayer.src = "";
+  }
+
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
-      audioEnabled = !audioEnabled;
-      soundToggle.setAttribute("aria-pressed", String(audioEnabled));
-      soundToggle.querySelector(".sound-toggle__icon").textContent = audioEnabled ? "♫" : "♪";
-      if (audioEnabled) { ensureAudio(); chime("unlock"); vibrate(12); }
+      if (songSheet?.classList.contains("open")) closeSongSheet();
+      else openSongSheet();
     });
   }
+  songClose?.addEventListener("click", closeSongSheet);
+  document.addEventListener("pointerdown", (e) => {
+    if (!songSheet?.classList.contains("open")) return;
+    if (e.target.closest("#song-sheet") || e.target.closest("#sound-toggle")) return;
+    closeSongSheet();
+  }, {passive:true});
 
   function updateSceneChrome() {
     const active = document.querySelector(".scene.active");
