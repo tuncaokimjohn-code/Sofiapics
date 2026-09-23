@@ -861,3 +861,116 @@ img.premium-ready.premium-loaded{opacity:1;filter:none;transform:none;}
     min-height:min(50svh,470px);
   }
 }
+
+
+/* =========================================================
+   V2.2 GAME RESULT READABILITY
+   Real-phone fix: result overlays must beat the Kim wall.
+   ========================================================= */
+#game-canvas{
+  position:relative;
+  z-index:1;
+  transition:filter .38s ease, transform .38s ease;
+}
+.game-shell.ending #game-canvas{
+  filter:blur(2.5px) brightness(.28) saturate(.62);
+  transform:scale(1.018);
+}
+.game-message{
+  z-index:30;
+  padding:18px;
+  font-size:inherit;
+  text-shadow:none;
+  background:rgba(5,4,8,0);
+  backdrop-filter:blur(0);
+  transition:opacity .28s ease, background .36s ease, backdrop-filter .36s ease;
+}
+.game-message.show{
+  opacity:1;
+  background:rgba(5,4,8,.58);
+  backdrop-filter:blur(5px) saturate(.72);
+}
+.game-result-card{
+  width:min(88%,520px);
+  padding:clamp(22px,5vw,38px) clamp(18px,5vw,36px);
+  border:1px solid rgba(245,220,169,.22);
+  border-radius:28px;
+  background:
+    linear-gradient(150deg,rgba(27,17,27,.94),rgba(9,7,12,.91)),
+    radial-gradient(circle at 50% 0%,rgba(243,182,199,.12),transparent 48%);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.64),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 0 1px rgba(255,255,255,.025);
+  color:#fff;
+  animation:gameResultIn .52s cubic-bezier(.2,.8,.2,1) both;
+}
+.game-result-kicker{
+  margin-bottom:14px;
+  font:800 .68rem/1.3 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--premium-champagne,#f5dca9);
+}
+.game-result-kicker.success{color:#93efbd;}
+.game-result-title{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(1.55rem,6vw,2.55rem);
+  line-height:.95;
+  letter-spacing:-.025em;
+  color:#fff9f6;
+}
+.game-result-score{
+  margin:8px 0 2px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(4.8rem,20vw,8rem);
+  line-height:.82;
+  color:var(--premium-champagne,#f5dca9);
+  text-shadow:0 0 34px rgba(245,220,169,.16);
+}
+.game-result-label{
+  font:800 .78rem/1.3 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.19em;
+  color:rgba(255,255,255,.70);
+}
+.game-result-sub{
+  margin-top:18px;
+  padding-top:17px;
+  border-top:1px solid rgba(255,255,255,.10);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(1.15rem,4.8vw,1.65rem);
+  line-height:1.08;
+  color:#f6c1cf;
+}
+.game-result-unlocked{
+  margin-top:8px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(2.35rem,10vw,4.4rem);
+  line-height:.88;
+  letter-spacing:-.035em;
+  color:#fff8f2;
+}
+.game-result-unlocked span{
+  display:block;
+  margin-top:7px;
+  color:#93efbd;
+  text-shadow:0 0 24px rgba(138,240,188,.14);
+}
+@keyframes gameResultIn{
+  from{opacity:0;transform:translateY(18px) scale(.94);filter:blur(5px)}
+  to{opacity:1;transform:none;filter:none}
+}
+@media(max-width:430px){
+  .game-message{padding:14px;}
+  .game-result-card{
+    width:min(92%,390px);
+    border-radius:24px;
+    padding:24px 18px;
+  }
+  .game-result-kicker{font-size:.58rem;letter-spacing:.18em;}
+  .game-result-title{font-size:1.72rem;}
+  .game-result-score{font-size:5.2rem;}
+  .game-result-label{font-size:.68rem;letter-spacing:.15em;}
+  .game-result-sub{font-size:1.14rem;}
+  .game-result-unlocked{font-size:2.7rem;}
+}
