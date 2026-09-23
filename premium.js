@@ -68,39 +68,67 @@
 
   const songSheet = document.getElementById("song-sheet");
   const songClose = document.getElementById("song-close");
+  const songHide = document.getElementById("song-hide");
+  const songStop = document.getElementById("song-stop");
   const palagiPlayer = document.getElementById("palagi-player");
-  const palagiEmbed = "https://www.youtube-nocookie.com/embed/v82VtUUGFqk?autoplay=1&playsinline=1&rel=0";
+  const palagiEmbed = "https://www.youtube-nocookie.com/embed/v82VtUUGFqk?autoplay=1&playsinline=1&rel=0&enablejsapi=1";
+  let palagiLoaded = false;
+
+  function markSongReady(ready) {
+    palagiLoaded = ready;
+    soundToggle?.classList.toggle("song-ready", ready);
+    songSheet?.classList.toggle("song-loaded", ready);
+    if (soundToggle) {
+      soundToggle.setAttribute("aria-label", ready ? "Open Palagi player" : "Play Palagi");
+      soundToggle.querySelector(".sound-toggle__icon").textContent = ready ? "♫" : "♪";
+    }
+  }
+
+  function ensurePalagiPlayer() {
+    if (!palagiPlayer || palagiLoaded) return;
+    palagiPlayer.src = palagiEmbed;
+    markSongReady(true);
+  }
 
   function openSongSheet() {
     if (!songSheet || !soundToggle) return;
+    ensurePalagiPlayer();
     songSheet.classList.add("open");
     songSheet.setAttribute("aria-hidden", "false");
     soundToggle.setAttribute("aria-pressed", "true");
-    soundToggle.querySelector(".sound-toggle__icon").textContent = "♫";
-    if (palagiPlayer && !palagiPlayer.src) palagiPlayer.src = palagiEmbed;
     vibrate(12);
   }
 
-  function closeSongSheet() {
+  function hideSongSheet() {
     if (!songSheet || !soundToggle) return;
     songSheet.classList.remove("open");
     songSheet.setAttribute("aria-hidden", "true");
     soundToggle.setAttribute("aria-pressed", "false");
-    soundToggle.querySelector(".sound-toggle__icon").textContent = "♪";
+    // Important: do NOT clear iframe src here.
+    // Keeping the iframe mounted allows Palagi to continue while scenes change.
+  }
+
+  function stopPalagi() {
     if (palagiPlayer) palagiPlayer.src = "";
+    markSongReady(false);
+    hideSongSheet();
+    vibrate([10,30,10]);
   }
 
   if (soundToggle) {
     soundToggle.addEventListener("click", () => {
-      if (songSheet?.classList.contains("open")) closeSongSheet();
+      if (songSheet?.classList.contains("open")) hideSongSheet();
       else openSongSheet();
     });
   }
-  songClose?.addEventListener("click", closeSongSheet);
+  songClose?.addEventListener("click", hideSongSheet);
+  songHide?.addEventListener("click", hideSongSheet);
+  songStop?.addEventListener("click", stopPalagi);
+
   document.addEventListener("pointerdown", (e) => {
     if (!songSheet?.classList.contains("open")) return;
     if (e.target.closest("#song-sheet") || e.target.closest("#sound-toggle")) return;
-    closeSongSheet();
+    hideSongSheet();
   }, {passive:true});
 
   function updateSceneChrome() {
