@@ -411,7 +411,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--premium-champag
 }
 .hero-scene::before,.finale-scene::before{
   content:"";position:absolute;inset:-9%;z-index:-3;
-  background-image:url("assets/images/hero-sofia.webp");
+  background-image:url("assets/images/hero-sofia.png");
   background-size:cover;background-position:center 30%;
   filter:blur(34px) saturate(1.25) brightness(.55);
   transform:scale(1.12);
