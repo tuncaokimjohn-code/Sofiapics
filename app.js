@@ -42,7 +42,7 @@
   const heroSubtitle = document.getElementById("hero-subtitle");
   const finaleEyebrow = document.getElementById("finale-eyebrow");
   if (heroDate) heroDate.textContent = `FOR ${String(cfg.recipient || "SOFIA").toUpperCase()} • ${String(cfg.birthdayMonthDay || "SEPTEMBER 27").toUpperCase()}`;
-  if (heroTitle) heroTitle.innerHTML = `Happy ${cfg.age || 27}th Birthday,<br><em>${escapeHtml(cfg.recipient || "Sofia")}.</em>`;
+  if (heroTitle) heroTitle.innerHTML = `Happy ${cfg.age || 27}th Birthday,<br><em>Love.</em>`;
   if (heroSubtitle) heroSubtitle.textContent = `${cfg.birthdayDate || "September 27, 2026"}. This little corner of the internet exists only because you do.`;
   if (finaleEyebrow) finaleEyebrow.textContent = `HAPPY ${cfg.age || 27}TH BIRTHDAY • ${String(cfg.birthdayMonthDay || "SEPTEMBER 27").toUpperCase()}`;
 
