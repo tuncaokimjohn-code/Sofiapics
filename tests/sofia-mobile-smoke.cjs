@@ -11,17 +11,40 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
 (async () => {
   const browser = await chromium.launch({ headless: true });
   try {
-    for (const viewport of [{width:360,height:700}, {width:390,height:844}]) {
+    for (const viewport of [{width:320,height:640}, {width:360,height:700}, {width:390,height:844}, {width:412,height:915}]) {
       const page = await browser.newPage({ viewport, isMobile:true, hasTouch:true });
       const errors = [];
       page.on("pageerror", e => errors.push(e.message));
       await page.goto("http://127.0.0.1:8765/", { waitUntil:"load" });
+      // Verify referenced local image and proposal assets exist without changing them.
+      const missingAssets = await page.evaluate(async () => {
+        const paths = [...new Set(Array.from(document.querySelectorAll("img[src],source[src]"))
+          .map(el=>el.getAttribute("src")).filter(p=>p && !p.startsWith("data:")))];
+        return (await Promise.all(paths.map(async path => {
+          const response=await fetch(path,{method:"HEAD"});
+          return response.ok ? null : path+" HTTP "+response.status;
+        }))).filter(Boolean);
+      });
+      assert.deepEqual(missingAssets, [], "original photos/proposal media URLs resolve");
       await page.locator("#passcode").fill(pin);
       await page.locator("#scene-hero.active").waitFor({ timeout:12000 });
       assert.equal(await page.locator(".scene.active").count(),1,"single scene after unlock");
       assert.equal(await page.locator("#scene-lock").isVisible(),false,"PIN never remains visible");
+      // Palagi is protected. Its iframe must remain mounted when hidden and
+      // survive scene changes instead of silently restarting.
+      await page.locator("#sound-toggle").dispatchEvent("click");
+      await page.locator("#song-sheet.open").waitFor();
+      const palagiBefore=await page.locator("#palagi-player").getAttribute("src");
+      assert.ok(palagiBefore && palagiBefore.includes("v82VtUUGFqk"),"approved Palagi embed remains");
+      await page.locator("#song-hide").dispatchEvent("click");
+      assert.equal(await page.locator("#palagi-player").getAttribute("src"),palagiBefore,"hiding preserves player");
       await page.locator('[data-next="story"]').click();
       await page.locator("#scene-story.active").waitFor();
+      // The page intentionally fades/slides each full-screen scene into view.
+      // Measure final layout only after the current scene has finished moving.
+      await page.locator("#scene-story").evaluate(el=>Promise.all(el.getAnimations().map(a=>a.finished.catch(()=>{}))));
+      assert.equal(await page.locator("#palagi-player").getAttribute("src"),palagiBefore,
+        "Palagi survives scene transition");
       const n = await page.locator(".story-card").count();
       assert.equal(n,8,"all eight memories present");
       for (let i=0;i<n;i++) {
@@ -36,19 +59,26 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
         assert.ok(caption.content.length>20,"chapter caption present "+i);
         assert.ok(caption.top < caption.stageBottom && caption.bottom>caption.stageTop,
           "chapter caption reachable inside story scroller "+i+": "+JSON.stringify(caption));
+        const nav=await page.evaluate(()=>{
+          const stage=document.querySelector("#story-stage").getBoundingClientRect();
+          const controls=document.querySelector("#scene-story .story-controls").getBoundingClientRect();
+          return {stageEnd:stage.bottom,navTop:controls.top,navEnd:controls.bottom,screen:innerHeight};
+        });
+        assert.ok(nav.navTop>=nav.stageEnd-3 && nav.navEnd<=nav.screen+2,
+          "navigation does not overlay captions or leave screen: "+JSON.stringify(nav));
         await page.locator("#story-next").click();
       }
       await page.locator("#scene-chaos.active").waitFor();
-      const first = page.locator(".chaos-card").first();
-      const caption = (await first.locator("figcaption").innerText()).trim();
-      // Gallery cards intentionally float forever; Playwright's default
-      // "stable" wait cannot settle an infinitely animated element.
-      // Dispatch the real click handler instead of treating motion as a failure.
-      await first.locator("img").dispatchEvent("click");
-      await page.locator(".photo-lightbox.open").waitFor();
-      assert.equal((await page.locator(".photo-lightbox__caption").textContent()).trim(),caption,
-        "lightbox uses actual gallery caption");
-      await page.locator(".photo-lightbox__close").click();
+      for (const first of await page.locator(".chaos-card").all()) {
+        const caption=(await first.locator("figcaption").innerText()).trim();
+        // The gallery cards float continuously, so dispatch a genuine
+        // DOM click instead of Playwright's permanently unstable click wait.
+        await first.locator("img").dispatchEvent("click");
+        await page.locator(".photo-lightbox.open").waitFor();
+        assert.equal((await page.locator(".photo-lightbox__caption").textContent()).trim(),caption,
+          "lightbox uses authored caption for every photo");
+        await page.locator(".photo-lightbox__close").dispatchEvent("click");
+      }
       await page.locator('[data-next="game-intro"]').click();
       await page.locator("#scene-game-intro.active").waitFor();
       await page.locator("#start-game").click();
@@ -69,6 +99,13 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
         return {panelBottom:p.bottom,buttonTop:b.top};
       });
       assert.ok(positions.buttonTop>=positions.panelBottom,"vault button follows childhood panel");
+      await page.locator('[data-vault="voice"]').dispatchEvent("click");
+      positions=await page.evaluate(()=>{
+        const p=document.querySelector(".vault-panel").getBoundingClientRect();
+        const b=document.querySelector("#to-cake").getBoundingClientRect();
+        return {panelBottom:p.bottom,buttonTop:b.top};
+      });
+      assert.ok(positions.buttonTop>=positions.panelBottom,"vault button follows voice content");
       await page.locator('[data-vault="letter"]').click();
       positions=await page.evaluate(()=>{
         const p=document.querySelector(".vault-panel").getBoundingClientRect();
@@ -85,6 +122,8 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
       await page.locator("#scene-finale.active").waitFor({timeout:5000});
       assert.equal(await page.locator("#scene-lock").isVisible(),false,"PIN absent at finale");
       assert.equal(await page.locator(".scene.active").count(),1,"single scene at finale");
+      assert.equal(await page.locator("#palagi-player").getAttribute("src"),palagiBefore,
+        "Palagi player remains mounted through finale");
       assert.deepEqual(errors,[], "no uncaught errors: "+errors.join(" | "));
       console.log("PASS viewport "+viewport.width+"x"+viewport.height+" unlock/story/gallery/game/vault/cake/finale");
       await page.close();
