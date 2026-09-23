@@ -18,28 +18,34 @@
 
   function showScene(name) {
     const next = sceneByName(name);
-    const current = sceneByName(currentScene);
-    if (!next || next === current || sceneTransitionTarget === name) return;
+    if (!next || name === currentScene || sceneTransitionTarget) return;
     sceneTransitionTarget = name;
-
-    const revealScene = () => {
-      if (current) current.classList.remove("active", "exiting");
-      next.classList.add("active");
-      currentScene = name;
-      sceneTransitionTarget = null;
+    // One visible scene at a time prevents the old PIN screen flashing
+    // through stacked transformed full-screen mobile scene transitions.
+    scenes.forEach((scene) => {
+      scene.classList.remove("active", "exiting");
+      scene.style.display = "none";
+      scene.setAttribute("aria-hidden", "true");
+      scene.inert = true;
+    });
+    void document.getElementById("app").offsetHeight;
+    next.style.display = "flex";
+    next.classList.add("active");
+    next.setAttribute("aria-hidden", "false");
+    next.inert = false;
+    currentScene = name;
+    sceneTransitionTarget = null;
+    const clearScroll = () => {
+      if (currentScene !== name) return;
       resetSceneScroll();
-      requestAnimationFrame(resetSceneScroll);
-      // After the mobile keyboard finishes retracting, correct any viewport
-      // scroll restoration before the next screen settles.
-      if (name === "boot" || name === "hero") setTimeout(resetSceneScroll, 400);
-      onSceneEnter(name);
+      next.scrollTop = 0;
+      const storyScroller = next.querySelector(".story-stage");
+      if (storyScroller) storyScroller.scrollTop = 0;
     };
-    if (current) {
-      current.classList.add("exiting");
-      setTimeout(revealScene, 260);
-    } else {
-      revealScene();
-    }
+    clearScroll();
+    requestAnimationFrame(clearScroll);
+    if (name === "boot" || name === "hero") setTimeout(clearScroll, 400);
+    onSceneEnter(name);
   }
 
   document.querySelectorAll("[data-next]").forEach((btn) => {
@@ -152,6 +158,9 @@
   function setStory(i) {
     storyPos = Math.max(0, Math.min(storyCards.length - 1, i));
     storyCards.forEach((card, index) => card.classList.toggle("active", index === storyPos));
+    const storyScroller = document.getElementById("story-stage");
+    if (storyScroller) storyScroller.scrollTop = 0;
+    storyCards[storyPos].querySelectorAll(".story-collage, .proposal-layout").forEach(rail => { rail.scrollLeft = 0; });
     Array.from(storyDots.children).forEach((dot, index) => dot.classList.toggle("active", index === storyPos));
     storyIndex.textContent = String(storyPos + 1);
     storyPrev.disabled = storyPos === 0;
@@ -320,7 +329,7 @@
       o.x -= speed * dt;
       if (o.type === "normal" && !o.passed && o.x + o.size < player.x) {
         o.passed = true;
-        score += 1;
+        score = Math.min(4, score + 1);
         gameScoreEl.textContent = String(score);
       }
     });
@@ -360,7 +369,7 @@
           // Secret forgiveness. The first four are intentionally impossible to truly lose on.
           o.passed = true;
           if (score < 4) {
-            score = Math.max(score + 1, obstacles.filter(x => x.type === "normal" && x.passed).length);
+            score = Math.min(4, Math.max(score + 1, obstacles.filter(x => x.type === "normal" && x.passed).length));
             gameScoreEl.textContent = String(Math.min(score, 4));
           }
           player.vy = -320;
@@ -417,7 +426,10 @@
   const vaultPanel = document.getElementById("vault-panel");
   const vaultButtons = Array.from(document.querySelectorAll("[data-vault]"));
   vaultButtons.forEach((btn) => {
-    btn.addEventListener("click", () => openVault(btn.dataset.vault));
+    btn.addEventListener("click", () => {
+      openVault(btn.dataset.vault);
+      requestAnimationFrame(() => vaultPanel.scrollIntoView({ block: "start", behavior: "instant" }));
+    });
   });
 
   function openVault(type) {
