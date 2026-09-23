@@ -41,7 +41,10 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
       await page.locator("#scene-chaos.active").waitFor();
       const first = page.locator(".chaos-card").first();
       const caption = (await first.locator("figcaption").innerText()).trim();
-      await first.locator("img").click();
+      // Gallery cards intentionally float forever; Playwright's default
+      // "stable" wait cannot settle an infinitely animated element.
+      // Dispatch the real click handler instead of treating motion as a failure.
+      await first.locator("img").dispatchEvent("click");
       assert.equal((await page.locator(".photo-lightbox__caption").innerText()).trim(),caption,
         "lightbox uses actual gallery caption");
       await page.locator(".photo-lightbox__close").click();
