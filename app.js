@@ -539,11 +539,20 @@
     }
   }
 
-  // If the user swipes horizontally on the story, move through cards.
+  // Story-level swipe navigation. Inner photo/video carousels own their own
+  // horizontal gesture so sliding photos never accidentally changes chapters.
   let touchStartX = 0;
+  let touchStartedInMediaRail = false;
   const stage = document.getElementById("story-stage");
-  stage.addEventListener("touchstart", (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+  stage.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartedInMediaRail = Boolean(e.target.closest(".story-collage, .proposal-layout"));
+  }, { passive: true });
   stage.addEventListener("touchend", (e) => {
+    if (touchStartedInMediaRail) {
+      touchStartedInMediaRail = false;
+      return;
+    }
     const dx = e.changedTouches[0].clientX - touchStartX;
     if (Math.abs(dx) < 55) return;
     if (dx < 0 && storyPos < storyCards.length - 1) setStory(storyPos + 1);
