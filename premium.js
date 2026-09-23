@@ -134,7 +134,8 @@
   function updateSceneChrome() {
     const active = document.querySelector(".scene.active");
     if (!active) return;
-    const name = active.dataset.scene || "lock";\n    document.body.dataset.scene = name;
+    const name = active.dataset.scene || "lock";
+    document.body.dataset.scene = name;
     const idx = Math.max(0, sceneOrder.indexOf(name));
     if (progressBar) progressBar.style.width = `${(idx / (sceneOrder.length - 1)) * 100}%`;
     if (progressLabel) progressLabel.textContent = sceneLabels[name] || "FOR SOFIA";
