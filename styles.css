@@ -1172,3 +1172,102 @@ html,body{
   overflow-y:auto;
   overscroll-behavior-y:contain;
 }
+
+
+/* =========================================================
+   V3.2 MOBILE STORY CAPTION AND LAYOUT REPAIR
+   Presentation-only: no image assets or story content changed.
+   Photo area, caption area and navigation each keep their own space.
+   ========================================================= */
+@media (max-width:820px) {
+  #scene-story {
+    overflow:hidden !important;
+    display:none;
+    flex-direction:column;
+    padding-bottom:max(12px,env(safe-area-inset-bottom));
+  }
+  #scene-story.active {display:flex;}
+  #scene-story .topbar {
+    flex:0 0 auto;
+    margin-bottom:10px;
+  }
+  #scene-story .story-stage {
+    display:block;
+    flex:1 1 auto;
+    min-height:0;
+    width:100%;
+    overflow:hidden;
+  }
+  #scene-story .story-card.active,
+  #scene-story .story-card.active.proposal-card {
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) auto;
+    height:100%;
+    min-height:0;
+    max-height:100%;
+    align-items:stretch;
+    gap:10px;
+  }
+  #scene-story .story-card > .story-media,
+  #scene-story .story-card > .story-collage,
+  #scene-story .story-card > .proposal-layout {
+    min-height:0;
+    max-height:100%;
+    height:100%;
+    width:100%;
+    box-sizing:border-box;
+  }
+  #scene-story .story-card > .story-media {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  #scene-story .story-card > .story-media img {
+    height:100%;
+    max-height:100%;
+    object-fit:contain;
+  }
+  #scene-story .story-collage {
+    align-items:center;
+  }
+  #scene-story .story-collage img {
+    height:100% !important;
+    max-height:100%;
+    object-fit:contain !important;
+  }
+  #scene-story .proposal-layout {align-items:stretch;}
+  #scene-story .proposal-layout video,
+  #scene-story .proposal-stills {height:100%;max-height:100%;}
+  #scene-story .proposal-stills img {height:100%;max-height:100%;}
+  #scene-story .story-copy {
+    min-height:0;
+    max-height:min(190px,29dvh);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border:1px solid rgba(245,220,169,.18);
+    border-radius:17px;
+    padding:12px 14px;
+    background:linear-gradient(145deg,rgba(45,21,34,.96),rgba(17,10,18,.96));
+    box-shadow:0 8px 32px rgba(0,0,0,.22);
+  }
+  #scene-story .story-copy h3 {
+    font-size:clamp(1.18rem,5vw,1.48rem);
+    line-height:1.13;
+    margin:5px 0 6px;
+  }
+  #scene-story .story-copy p {
+    font-size:.86rem;
+    line-height:1.42;
+    margin:0;
+  }
+  #scene-story .story-date {font-size:.68rem;}
+  #scene-story .story-controls {
+    position:relative;
+    inset:auto;
+    flex:0 0 auto;
+    margin-top:10px;
+    z-index:12;
+  }
+}
