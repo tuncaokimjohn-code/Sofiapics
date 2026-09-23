@@ -1102,3 +1102,45 @@ body[data-scene="finale"] .sound-toggle::before{
   .song-sheet h3{font-size:2rem;}
   .sound-toggle::before{display:none;}
 }
+
+
+/* =========================================================
+   V3 PALAGI PERSISTENT PLAYER
+   Keep the YouTube player alive when the drawer is hidden.
+   ========================================================= */
+.song-sheet__actions{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  margin:12px 0 10px;
+}
+.song-sheet__action{
+  min-height:42px;
+  border-radius:14px;
+  border:1px solid rgba(245,220,169,.16);
+  background:rgba(255,255,255,.055);
+  color:#fff7f2;
+  font:800 .72rem/1.2 ui-sans-serif,system-ui,sans-serif;
+  padding:10px 12px;
+}
+.song-sheet__action--danger{
+  color:#f5c3cf;
+  border-color:rgba(245,160,184,.18);
+}
+.sound-toggle.song-ready{
+  color:var(--premium-champagne,#f5dca9);
+  border-color:rgba(245,220,169,.48);
+  box-shadow:0 0 0 4px rgba(245,220,169,.07),0 12px 32px rgba(0,0,0,.42);
+}
+.sound-toggle.song-ready::before{
+  content:"PALAGI • READY";
+}
+.song-sheet.song-loaded .song-sheet__kicker::after{
+  content:"  •  PLAYER ACTIVE";
+  color:#93efbd;
+}
+@media(max-width:430px){
+  .song-sheet__actions{
+    grid-template-columns:1fr;
+  }
+}
