@@ -246,7 +246,7 @@ strong { color: #fff; }
   --premium-ease:cubic-bezier(.2,.8,.2,1);
 }
 
-html{scroll-behavior:smooth;background:#070407;}
+html{scroll-behavior:auto;background:#070407;} /* native instant reset between scenes */
 body{
   background:
     radial-gradient(circle at 20% -10%,rgba(126,31,65,.24),transparent 30%),
