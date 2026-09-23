@@ -78,7 +78,7 @@
   function updateSceneChrome() {
     const active = document.querySelector(".scene.active");
     if (!active) return;
-    const name = active.dataset.scene || "lock";
+    const name = active.dataset.scene || "lock";\n    document.body.dataset.scene = name;
     const idx = Math.max(0, sceneOrder.indexOf(name));
     if (progressBar) progressBar.style.width = `${(idx / (sceneOrder.length - 1)) * 100}%`;
     if (progressLabel) progressLabel.textContent = sceneLabels[name] || "FOR SOFIA";
@@ -107,6 +107,13 @@
     document.body.appendChild(dot);
     setTimeout(() => dot.remove(), 600);
   }, {passive:true});
+
+  // Premium ambient backplates for portrait photos, keeping the full image visible.
+  document.querySelectorAll(".story-media:not(.phone-frame)").forEach(frame => {
+    const img = frame.querySelector("img");
+    if (!img) return;
+    frame.style.setProperty("--media-bg", `url("${img.getAttribute("src")}")`);
+  });
 
   document.querySelectorAll("img").forEach(img => {
     if (img.closest(".avatar-chip") || img.classList.contains("hero-bg") || img.classList.contains("finale-photo")) return;
