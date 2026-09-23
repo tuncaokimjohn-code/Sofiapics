@@ -4,6 +4,9 @@ on:
     branches:
       - 'fix/sofia-mobile-*'
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 jobs:
   mobile-smoke:
     runs-on: ubuntu-latest
