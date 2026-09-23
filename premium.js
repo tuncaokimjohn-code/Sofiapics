@@ -185,7 +185,14 @@
     if (!img || !lightbox || !lightboxImg) return;
     lightboxImg.src = img.currentSrc || img.src;
     lightboxImg.alt = img.alt || "";
-    if (lightboxCaption) lightboxCaption.textContent = img.alt || "";
+    if (lightboxCaption) {
+      // Use authored gallery/chapter caption instead of generic alt text.
+      const gallery = img.closest(".chaos-card");
+      const chapter = img.closest(".story-card");
+      const authored = gallery?.querySelector("figcaption")?.textContent?.trim()
+        || chapter?.querySelector(".story-copy")?.textContent?.trim();
+      lightboxCaption.textContent = authored || img.alt || "";
+    }
     lightbox.classList.add("open");
     lightbox.setAttribute("aria-hidden","false");
     document.body.classList.add("lightbox-open");
