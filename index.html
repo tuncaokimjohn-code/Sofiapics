@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#09070b" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>Private Archive</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <main id="app" class="app-shell">
+
+    <section class="scene active" id="scene-lock" data-scene="lock" aria-labelledby="lock-title">
+      <div class="lock-card glass-card">
+        <div class="eyebrow">PRIVATE ARCHIVE</div>
+        <div class="lock-orbit" aria-hidden="true"><span>♡</span></div>
+        <h1 id="lock-title">This page was made for one person.</h1>
+        <p class="muted">If you are her, you already know where the story began.</p>
+        <form id="passcode-form" class="pin-form">
+          <label class="sr-only" for="passcode">Passcode</label>
+          <input id="passcode" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••" aria-describedby="passcode-hint passcode-error" />
+          <button class="primary-btn" type="submit">Unlock</button>
+        </form>
+        <p id="passcode-hint" class="hint"></p>
+        <p id="passcode-error" class="error" role="status"></p>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-boot" data-scene="boot" aria-label="Preparing surprise">
+      <div class="boot-wrap">
+        <div class="eyebrow">SOFIA ARCHIVE // BOOT</div>
+        <div id="boot-lines" class="boot-lines" aria-live="polite"></div>
+        <div class="progress-track"><div id="boot-progress" class="progress-bar"></div></div>
+      </div>
+    </section>
+
+    <section class="scene hero-scene" id="scene-hero" data-scene="hero" aria-labelledby="hero-title">
+      <img class="hero-bg" src="assets/images/hero-sofia.webp" alt="Sofia smiling while holding a bouquet" />
+      <div class="hero-shade"></div>
+      <div class="hero-copy">
+        <div class="eyebrow light" id="hero-date">FOR SOFIA • SEPTEMBER 27</div>
+        <h1 id="hero-title">Happy 27th Birthday,<br><em>Sofia.</em></h1>
+        <p id="hero-subtitle">September 27, 2026. This little corner of the internet exists only because you do.</p>
+        <button class="primary-btn light-btn" data-next="story">Open our story</button>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-story" data-scene="story" aria-labelledby="story-title">
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">OUR STORY</div>
+          <h2 id="story-title">It started with one word.</h2>
+        </div>
+        <div class="story-count"><span id="story-index">1</span> / <span id="story-total">7</span></div>
+      </div>
+
+      <div class="story-stage" id="story-stage">
+        <article class="story-card active" data-story="0">
+          <div class="story-media phone-frame"><img src="assets/images/first-hi.webp" alt="Screenshot of Sofia's first Hi message" /></div>
+          <div class="story-copy">
+            <span class="story-date">June 10, 2023</span>
+            <h3>The first “Hi.”</h3>
+            <p>And yes, for the permanent historical record: <strong>she made the first move.</strong> 😂</p>
+          </div>
+        </article>
+
+        <article class="story-card" data-story="1">
+          <div class="story-media"><img src="assets/images/first-meetup.webp" alt="First meetup photo together" /></div>
+          <div class="story-copy"><span class="story-date">CHAPTER 02</span><h3>One “Hi” became a meet-up.</h3><p>Two smiles, one camera, and apparently the beginning of a very long side quest together.</p></div>
+        </article>
+
+        <article class="story-card" data-story="2">
+          <div class="story-media"><img src="assets/images/first-date.webp" alt="First date photo together" /></div>
+          <div class="story-copy"><span class="story-date">CHAPTER 03</span><h3>Then came the first date.</h3><p>No cinematic soundtrack. No perfect script. Just us, figuring out what this thing might become.</p></div>
+        </article>
+
+        <article class="story-card" data-story="3">
+          <div class="story-collage three-up">
+            <img src="assets/images/couple-dinner-striped.webp" alt="Couple dinner memory" />
+            <img src="assets/images/couple-home-food.webp" alt="Couple enjoying food at home" />
+            <img src="assets/images/couple-blue-dress.webp" alt="Couple selfie" />
+          </div>
+          <div class="story-copy"><span class="story-date">THE EVERYDAY STUFF</span><h3>Somehow, ordinary days became my favorites.</h3><p>Meals, malls, random selfies, small trips, tired days. The quiet archive of being us.</p></div>
+        </article>
+
+        <article class="story-card" data-story="4">
+          <div class="story-collage two-up">
+            <img src="assets/images/couple-christmas-dog.webp" alt="Christmas together with a dog" />
+            <img src="assets/images/couple-wedding-mirror.webp" alt="Couple dressed up at a wedding" />
+          </div>
+          <div class="story-copy"><span class="story-date">MILESTONES</span><h3>Seasons changed. We kept showing up.</h3><p>Different places, different versions of us, same team.</p></div>
+        </article>
+
+        <article class="story-card" data-story="5">
+          <div class="story-collage three-up">
+            <img src="assets/images/couple-dinner-bouquet.webp" alt="Kim and Sofia together at dinner" />
+            <img src="assets/images/couple-restaurant-yellow.webp" alt="Kim and Sofia sharing another meal together" />
+            <img src="assets/images/couple-dinner-striped.webp" alt="Kim and Sofia on a casual date" />
+          </div>
+          <div class="story-copy"><span class="story-date">JULY 08 • OUR ANNIVERSARY</span><h3>The date we call ours.</h3><p>Some dates belong to the calendar. <strong>July 08 belongs to us.</strong> Another marker in the story we keep choosing together.</p></div>
+        </article>
+
+        <article class="story-card proposal-card" data-story="6">
+          <div class="proposal-layout">
+            <video id="proposal-video" controls playsinline preload="metadata" poster="assets/images/proposal-hands.webp">
+              <source src="assets/video/proposal.mp4" type="video/mp4" />
+            </video>
+            <div class="proposal-stills">
+              <img src="assets/images/proposal-ring-face.webp" alt="Proposal ring photo" />
+              <img src="assets/images/proposal-hands.webp" alt="Hands showing engagement ring" />
+            </div>
+          </div>
+          <div class="story-copy"><span class="story-date">THE QUESTION</span><h3>I stopped imagining a future with you.</h3><p>I started planning one. <strong>And you said yes.</strong> 💍</p></div>
+        </article>
+
+        <article class="story-card" data-story="7">
+          <div class="story-media"><img src="assets/images/couple-christmas-selfie.webp" alt="Recent happy photo together" /></div>
+          <div class="story-copy"><span class="story-date">NOW</span><h3>And the story is still being written.</h3><p>Which is lucky, because I have a lot more pages planned.</p></div>
+        </article>
+      </div>
+
+      <div class="story-controls">
+        <button id="story-prev" class="icon-btn" aria-label="Previous memory">←</button>
+        <div id="story-dots" class="story-dots" aria-label="Story progress"></div>
+        <button id="story-next" class="primary-btn">Next memory</button>
+      </div>
+    </section>
+
+    <section class="scene chaos-scene" id="scene-chaos" data-scene="chaos" aria-labelledby="chaos-title">
+      <div class="topbar">
+        <div><div class="eyebrow">CLASSIFIED FILES</div><h2 id="chaos-title">SOFIA.exe</h2></div>
+        <span class="status-pill">CHAOS: STABLE-ISH</span>
+      </div>
+      <p class="section-lede">A very serious investigation into one suspiciously adorable human.</p>
+      <div class="chaos-grid">
+        <figure class="chaos-card tilt-left"><img src="assets/images/funny-sofia-icecream.webp" alt="Sofia eating ice cream" /><figcaption>Evidence 01: Snack protocol engaged.</figcaption></figure>
+        <figure class="chaos-card tilt-right"><img src="assets/images/funny-couple-1.webp" alt="Funny couple selfie" /><figcaption>Evidence 02: Two functioning adults.</figcaption></figure>
+        <figure class="chaos-card tilt-left"><img src="assets/images/funny-sofia-scarf.webp" alt="Sofia posing with a scarf" /><figcaption>Evidence 03: Main character physics.</figcaption></figure>
+        <figure class="chaos-card tilt-right"><img src="assets/images/funny-sofia-food.webp" alt="Sofia presenting food" /><figcaption>Evidence 04: Food detected. Happiness restored.</figcaption></figure>
+        <figure class="chaos-card tilt-left"><img src="assets/images/funny-sofia-coffee.webp" alt="Sofia posing near coffee" /><figcaption>Evidence 05: Caffeine diplomacy.</figcaption></figure>
+        <figure class="chaos-card tilt-right"><img src="assets/images/funny-sofia-home.webp" alt="Sofia at home" /><figcaption>Evidence 06: The look that ends arguments.</figcaption></figure>
+      </div>
+      <button class="primary-btn center-btn" data-next="game-intro">Continue investigation</button>
+    </section>
+
+    <section class="scene game-intro-scene" id="scene-game-intro" data-scene="game-intro" aria-labelledby="game-intro-title">
+      <div class="game-intro-card glass-card">
+        <div class="eyebrow">BONUS LEVEL UNLOCKED</div>
+        <div class="versus-row">
+          <div class="avatar-chip"><img src="assets/images/game-sofia.webp" alt="Sofia game avatar" /><span>SOFIA</span></div>
+          <div class="vs">VS</div>
+          <div class="avatar-chip danger"><img src="assets/images/game-kim.webp" alt="Kim game obstacle avatar" /><span>KIM × ???</span></div>
+        </div>
+        <h2 id="game-intro-title">MISSION: Escape from Kim.</h2>
+        <p>Jump over four obstacles. That is all. Definitely nothing suspicious after that.</p>
+        <button class="primary-btn" id="start-game">Start mission</button>
+      </div>
+    </section>
+
+    <section class="scene game-scene" id="scene-game" data-scene="game" aria-labelledby="game-title">
+      <div class="game-hud">
+        <div><span class="eyebrow">ESCAPE FROM KIM</span><h2 id="game-title">Tap to jump</h2></div>
+        <div class="score-box"><span id="game-score">0</span><small>KIMS AVOIDED</small></div>
+      </div>
+      <div class="game-shell" id="game-shell">
+        <canvas id="game-canvas" aria-label="Mini game where Sofia jumps over Kim obstacles"></canvas>
+        <div class="game-message" id="game-message" aria-live="polite"></div>
+      </div>
+      <div class="game-controls-note">Tap anywhere in the game or press Space.</div>
+    </section>
+
+    <section class="scene vault-scene" id="scene-vault" data-scene="vault" aria-labelledby="vault-title">
+      <div class="vault-header">
+        <div class="eyebrow">UNEXPECTED DATA FOUND</div>
+        <h2 id="vault-title">Secret vault unlocked.</h2>
+        <p>You did not lose the game. The game was the key.</p>
+      </div>
+
+      <div class="vault-grid">
+        <button class="vault-card" data-vault="childhood">
+          <span class="vault-icon">✦</span>
+          <span class="vault-label">A photo I never get tired of</span>
+          <span class="vault-open">Open</span>
+        </button>
+        <button class="vault-card" data-vault="letter">
+          <span class="vault-icon">✉</span>
+          <span class="vault-label">One last letter</span>
+          <span class="vault-open">Open</span>
+        </button>
+        <button class="vault-card" data-vault="voice">
+          <span class="vault-icon">◉</span>
+          <span class="vault-label">A message in my voice</span>
+          <span class="vault-open">Open</span>
+        </button>
+      </div>
+      <div id="vault-panel" class="vault-panel" aria-live="polite"></div>
+      <button class="primary-btn center-btn" id="to-cake">One final birthday mission</button>
+    </section>
+
+    <section class="scene cake-scene" id="scene-cake" data-scene="cake" aria-labelledby="cake-title">
+      <div class="cake-copy">
+        <div class="eyebrow">NO JOKES FOR THIS PART</div>
+        <h2 id="cake-title">Make a wish, Sofia.</h2>
+        <p id="cake-subtitle">Twenty-seven candles would be a fire hazard, so five will have to do. 😂 When you are ready, blow toward the microphone.</p>
+      </div>
+
+      <div class="cake-wrap" aria-label="Birthday cake with five candles">
+        <div class="candles" id="candles">
+          <span class="candle"><i class="flame"></i></span>
+          <span class="candle"><i class="flame"></i></span>
+          <span class="candle"><i class="flame"></i></span>
+          <span class="candle"><i class="flame"></i></span>
+          <span class="candle"><i class="flame"></i></span>
+        </div>
+        <div class="cake-top"></div>
+        <div class="cake-layer layer-1"></div>
+        <div class="cake-layer layer-2"></div>
+        <div class="cake-plate"></div>
+      </div>
+
+      <div class="mic-actions">
+        <button class="primary-btn" id="enable-mic">Enable microphone</button>
+        <button class="ghost-btn" id="manual-blow">Or hold to blow</button>
+      </div>
+      <p id="mic-status" class="hint">Microphone access is optional.</p>
+    </section>
+
+    <section class="scene finale-scene" id="scene-finale" data-scene="finale" aria-labelledby="finale-title">
+      <div id="confetti" class="confetti" aria-hidden="true"></div>
+      <img class="finale-photo" src="assets/images/couple-christmas-selfie.webp" alt="Kim and Sofia smiling together" />
+      <div class="finale-shade"></div>
+      <div class="finale-copy">
+        <div class="eyebrow light" id="finale-eyebrow">HAPPY 27TH BIRTHDAY • SEPTEMBER 27</div>
+        <h1 id="finale-title">To my favorite person.</h1>
+        <p id="final-line"></p>
+        <div class="finale-actions">
+          <button class="light-outline" id="replay-story">Replay memories</button>
+          <button class="light-outline" id="replay-game">Play the impossible game again</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
