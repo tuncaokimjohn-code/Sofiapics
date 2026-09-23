@@ -1144,3 +1144,31 @@ body[data-scene="finale"] .sound-toggle::before{
     grid-template-columns:1fr;
   }
 }
+
+
+/* V3.1: PHONE VIEWPORT CONTAINMENT
+   Each scene owns its own viewport. The document itself must never scroll
+   behind the scenes when the mobile keyboard opens or closes. */
+html,body{
+  height:100%;
+  overflow:hidden!important;
+  overscroll-behavior:none;
+}
+.app-shell{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  overflow:hidden;
+}
+.app-shell > .scene{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  min-height:0;
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior-y:contain;
+}
