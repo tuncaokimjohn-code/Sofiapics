@@ -1,0 +1,32 @@
+name: Sofia Mobile Smoke
+on:
+  push:
+    branches:
+      - 'fix/sofia-mobile-*'
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+jobs:
+  mobile-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax-check scripts
+        run: |
+          node --check app.js
+          node --check premium.js
+          node --check tests/sofia-mobile-smoke.cjs
+      - name: Install browser runner
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.1
+          npx playwright install --with-deps chromium
+      - name: Serve local site and run full mobile smoke
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/sofia-http.log 2>&1 &
+          sleep 2
+          node tests/sofia-mobile-smoke.cjs
