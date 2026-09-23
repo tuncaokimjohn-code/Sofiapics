@@ -1364,8 +1364,3 @@ html,body{
   #scene-story .story-controls{gap:5px;padding:6px}
   #scene-story .story-controls .primary-btn{padding-inline:8px;font-size:.68rem}
 }
-
-/* 320px mobile acceptance: reclaim the unused navigation gap, not caption space. */
-@media(max-width:375px){
-  #scene-story .story-controls{margin-top:0}
-}
