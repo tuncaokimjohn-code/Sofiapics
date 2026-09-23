@@ -7,23 +7,38 @@
 
   const sceneByName = (name) => document.querySelector(`[data-scene="${name}"]`);
 
+  // Always start a newly revealed scene at the top. On mobile, the PIN
+  // keyboard can leave the document scrolled even after it disappears.
+  let sceneTransitionTarget = null;
+  function resetSceneScroll() {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+  }
+
   function showScene(name) {
     const next = sceneByName(name);
     const current = sceneByName(currentScene);
-    if (!next || next === current) return;
-    if (current) {
-      current.classList.add("exiting");
-      setTimeout(() => {
-        current.classList.remove("active", "exiting");
-        next.classList.add("active");
-        currentScene = name;
-        window.scrollTo({ top: 0, behavior: "auto" });
-        onSceneEnter(name);
-      }, 260);
-    } else {
+    if (!next || next === current || sceneTransitionTarget === name) return;
+    sceneTransitionTarget = name;
+
+    const revealScene = () => {
+      if (current) current.classList.remove("active", "exiting");
       next.classList.add("active");
       currentScene = name;
+      sceneTransitionTarget = null;
+      resetSceneScroll();
+      requestAnimationFrame(resetSceneScroll);
+      // After the mobile keyboard finishes retracting, correct any viewport
+      // scroll restoration before the next screen settles.
+      if (name === "boot" || name === "hero") setTimeout(resetSceneScroll, 400);
       onSceneEnter(name);
+    };
+    if (current) {
+      current.classList.add("exiting");
+      setTimeout(revealScene, 260);
+    } else {
+      revealScene();
     }
   }
 
@@ -46,13 +61,25 @@
   if (heroSubtitle) heroSubtitle.textContent = `${cfg.birthdayDate || "September 27, 2026"}. This little corner of the internet exists only because you do.`;
   if (finaleEyebrow) finaleEyebrow.textContent = `HAPPY ${cfg.age || 27}TH BIRTHDAY • ${String(cfg.birthdayMonthDay || "SEPTEMBER 27").toUpperCase()}`;
 
+  let unlockStarted = false;
+  function completeUnlock() {
+    if (unlockStarted) return;
+    unlockStarted = true;
+    passcodeInput.blur(); // close phone keyboard before changing the scene
+    passcodeError.textContent = "Access granted. Birthday girl detected. ♡";
+    const button = passcodeForm.querySelector('button[type="submit"]');
+    if (button) button.disabled = true;
+    resetSceneScroll();
+    setTimeout(() => showScene("boot"), 160);
+  }
+
   passcodeForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    if (unlockStarted) return;
     const value = String(passcodeInput.value || "").replace(/[^0-9]/g, "").slice(0, 4);
     passcodeInput.value = value;
     if (value === String(cfg.passcode || "0610")) {
-      passcodeError.textContent = "Access granted. Birthday girl detected. ♡";
-      showScene("boot");
+      completeUnlock();
     } else {
       const errors = [
         "Nope. Suspicious visitor detected. 😂",
@@ -65,12 +92,11 @@
   });
 
   passcodeInput.addEventListener("input", () => {
+    if (unlockStarted) return;
     const value = String(passcodeInput.value || "").replace(/[^0-9]/g, "").slice(0, 4);
     if (passcodeInput.value !== value) passcodeInput.value = value;
     passcodeError.textContent = "";
-    if (value === String(cfg.passcode || "0610")) {
-      showScene("boot");
-    }
+    if (value === String(cfg.passcode || "0610")) completeUnlock();
   });
 
   const bootLinesEl = document.getElementById("boot-lines");
