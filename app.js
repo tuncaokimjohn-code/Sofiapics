@@ -240,10 +240,22 @@
     if (endingTriggered) return;
     endingTriggered = true;
     gameRunning = false;
-    gameMessage.innerHTML = `<div><div style="font-size:.24em;letter-spacing:.22em;font-family:DM Sans,sans-serif;color:#f0d19a;margin-bottom:12px">ESCAPE FAILED ❤️</div>FINAL SCORE: 4 KIMS AVOIDED<br><span style="font-size:.48em;color:#f6c1cf">1 KIM ACCEPTED FOREVER</span></div>`;
+    gameShell.classList.add("ending");
+    gameMessage.innerHTML = `
+      <div class="game-result-card">
+        <div class="game-result-kicker">ESCAPE FAILED ❤️</div>
+        <div class="game-result-title">FINAL SCORE</div>
+        <div class="game-result-score">4</div>
+        <div class="game-result-label">KIMS AVOIDED</div>
+        <div class="game-result-sub">1 KIM ACCEPTED FOREVER</div>
+      </div>`;
     gameMessage.classList.add("show");
     setTimeout(() => {
-      gameMessage.innerHTML = `<div><div style="font-size:.24em;letter-spacing:.22em;font-family:DM Sans,sans-serif;color:#8af0bc;margin-bottom:12px">UNEXPECTED DATA FOUND</div>SECRET VAULT<br>UNLOCKED</div>`;
+      gameMessage.innerHTML = `
+        <div class="game-result-card">
+          <div class="game-result-kicker success">UNEXPECTED DATA FOUND</div>
+          <div class="game-result-unlocked">SECRET VAULT<span>UNLOCKED</span></div>
+        </div>`;
     }, 1900);
     setTimeout(() => showScene("vault"), 3900);
   }
