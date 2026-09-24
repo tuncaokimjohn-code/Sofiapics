@@ -100,6 +100,12 @@ const pin = conf.window.BIRTHDAY_CONFIG.passcode;
       });
       assert.ok(positions.buttonTop>=positions.panelBottom,"vault button follows childhood panel");
       await page.locator('[data-vault="voice"]').dispatchEvent("click");
+      const voice=page.locator(".vault-panel audio");
+      await voice.waitFor();
+      const voiceSrc=await voice.getAttribute("src");
+      assert.equal(voiceSrc,"assets/audio/sofia-birthday-voice.m4a","voice vault uses Chief's recording");
+      const voiceHttp=await page.request.head("http://127.0.0.1:8765/"+voiceSrc);
+      assert.ok(voiceHttp.ok(),"voice recording is served successfully");
       positions=await page.evaluate(()=>{
         const p=document.querySelector(".vault-panel").getBoundingClientRect();
         const b=document.querySelector("#to-cake").getBoundingClientRect();

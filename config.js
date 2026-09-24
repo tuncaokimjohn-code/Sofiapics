@@ -36,7 +36,7 @@ No matter how much life changes, no matter where our journey takes us, I will al
 I love you so, so much.
 
 Happy birthday, my love. ❤️`,
-  voiceFile: "",
+  voiceFile: "assets/audio/sofia-birthday-voice.m4a",
   finalLine: "Happy 27th birthday, love. Thank you for sharing this life with me. I love you.",
   storyStartDate: "June 10, 2023",
 };
